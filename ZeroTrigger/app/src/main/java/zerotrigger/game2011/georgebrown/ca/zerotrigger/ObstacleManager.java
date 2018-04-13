@@ -1,6 +1,7 @@
 package zerotrigger.game2011.georgebrown.ca.zerotrigger;
 
 import android.graphics.Canvas;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -23,20 +24,17 @@ public ObstacleManager(int playerGap,int obstacleGap,int obstacleHeight,int colo
  this.color = color;
  obstacles = new ArrayList<>();
 
+
  startTime = System.currentTimeMillis();
 
  populateObstacles();
 }
 private void populateObstacles()
 {
-    int currY = -5* Constants.SCREEN_HEIGHT/4;
-   while(currY<0)
-    {
-        //generating gap
-        int xStart = (int) (Math.random()*(Constants.SCREEN_WIDTH-playerGap));
-        obstacles.add(new Obstacles(obstacleHeight,color,xStart,currY,playerGap));
-        currY +=obstacleHeight+obstacleGap;
-    }
+
+        obstacles.add(new Obstacles(obstacleHeight,Constants.SCREEN_WIDTH,0,playerGap));
+        obstacles.add(new Obstacles(obstacleHeight,Constants.SCREEN_WIDTH+100,0,playerGap));
+
 }
  public void update()
  {
@@ -45,13 +43,9 @@ private void populateObstacles()
      float speed = Constants.SCREEN_HEIGHT/10000.0f;
      for(Obstacles ob : obstacles)
      {
-        ob.incrementY(speed *elapsedTime);
+       // ob.incrementY(speed *elapsedTime);
      }
-     if(obstacles.get(obstacles.size()-1).getRectangle().top>= Constants.SCREEN_HEIGHT)
-     {
-         int xStart = (int) (Math.random()*(Constants.SCREEN_WIDTH-playerGap));
-         obstacles.add(0,new Obstacles(obstacleHeight,color,xStart,obstacles.get(0).getRectangle().top-obstacleHeight-obstacleGap,playerGap));
-     }
+
  }
 
  public void draw(Canvas canvas)

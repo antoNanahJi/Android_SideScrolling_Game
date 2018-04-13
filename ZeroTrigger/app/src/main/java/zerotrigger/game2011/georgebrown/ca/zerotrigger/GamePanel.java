@@ -31,6 +31,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
     }
     @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        Constants.SCREEN_WIDTH = w;
+        Constants.SCREEN_HEIGHT = h;
+
+    }
+    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
 
@@ -77,7 +84,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     {
         super.draw(canvas);
         canvas.drawColor(Color.WHITE);
-        player.draw(canvas);
+        //drawing background
+        //drawing Map
         obstacleManager.draw(canvas);
+        //drawing player
+        player.draw(canvas);
+        //drawing enemy
     }
 }
