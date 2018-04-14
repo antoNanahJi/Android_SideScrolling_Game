@@ -87,10 +87,6 @@ public class Obstacles implements GameObject
 
 
 
-
-
-
-
     @Override
     public void draw(Canvas canvas) {
         Paint paint = new Paint();

@@ -3,11 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ZeroTrigger.iml" filepath="$PROJECT_DIR$/ZeroTrigger.iml" />
-      <module fileurl="file://C:\Users\andre\Desktop\Android_SideScrolling_Game\ZeroTrigger\ZeroTrigger.iml" filepath="C:\Users\andre\Desktop\Android_SideScrolling_Game\ZeroTrigger\ZeroTrigger.iml" />
       <module fileurl="file://C:\Users\anto2\Desktop\Android_SideScrolling_Game\ZeroTrigger\ZeroTrigger.iml" filepath="C:\Users\anto2\Desktop\Android_SideScrolling_Game\ZeroTrigger\ZeroTrigger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\anto2\Desktop\Android_SideScrolling_Game\ZeroTrigger\app\app.iml" filepath="C:\Users\anto2\Desktop\Android_SideScrolling_Game\ZeroTrigger\app\app.iml" />
-      <module fileurl="file://C:\Users\andre\Desktop\Android_SideScrolling_Game\ZeroTrigger\app\app.iml" filepath="C:\Users\andre\Desktop\Android_SideScrolling_Game\ZeroTrigger\app\app.iml" />
     </modules>
   </component>
 </project>
