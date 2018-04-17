@@ -9,42 +9,58 @@ import android.widget.ImageView;
 
 public class Obstacles implements GameObject
 {
-    private Rect rectangle;
-    private Rect rectangle2;
-    private int color;
+    int xClip;
+    int startY;
+    int endY;
+    int SIZE=200;
+    int scrollingSpeed;
+    //Bitmap width and height
+    int bWidth;
+    int bHeight;
+    long startTime;
+
+    boolean reversedFirst;
+
+
+
     private int numRow=4;
-    private int numCol=3;
+    private int numCol=12;
     private int startPosX=0;
     private int startPosY=Constants.SCREEN_HEIGHT-800;
     private int mapLayout[][]=
             {
-                    {0,1,2},
-                    {0,1,2},
-                    {0,1,2},
-                    {0,1,2}
+                    {0,1,1,1,1,1,1,1,1,1,1,2},
+                    {0,1,1,1,1,1,1,1,1,1,1,2},
+                    {0,1,1,1,1,1,1,1,1,1,1,2},
+                    {0,1,1,1,1,1,1,1,1,1,1,2}
             };
     //Platform images....
     int platformImg[]={R.drawable.left_floor,R.drawable.middle_floor,R.drawable.right_floor,R.drawable.character};
     private Bitmap bitmapArr[][]=new Bitmap[numRow][numCol];
 
-    public Rect getRectangle()
-    {
-        return rectangle;
-    }
-    public void incrementY(float y)
-    {
-        rectangle.top+=y;
-        rectangle.bottom+=y;
-        rectangle2.top+=y;
-        rectangle2.bottom+=y;
-    }
 
-    public Obstacles(int rectHeight, int startX, int startY, int playerGap)
+    public void incrementX()
     {
-        //this.color = color;
+        startPosX-=scrollingSpeed;
+        bWidth-=scrollingSpeed;
+        if (bWidth <= Constants.SCREEN_WIDTH) {
+            //startPosX = 0;
+            scrollingSpeed=0;
+            //reversedFirst = !reversedFirst;
+        }
+            if (startPosX <= 0) {
+            //startPosX = bWidth;
+           // reversedFirst = !reversedFirst;
+
+        }
+
+    }
+    public Obstacles( int playerGap)
+    {
+
         for(int i=0;i<numRow;i++) {
             for (int j = 0; j < numCol; j++) {
-                 switch (j)
+                 switch (mapLayout[i][j])
                     {
                         case 0:
                             mapLayout[i][j]=platformImg[0];
@@ -53,7 +69,7 @@ public class Obstacles implements GameObject
                             mapLayout[i][j]=platformImg[1];
                             break;
                         case 2:
-                            mapLayout[i][j]=platformImg[3];
+                            mapLayout[i][j]=platformImg[2];
                             break;
                     }
 
@@ -68,45 +84,36 @@ public class Obstacles implements GameObject
                 bitmapArr[i][j]=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),mapLayout[i][j],options);
             }
         }
+
+
+        scrollingSpeed =2;
+
+        bWidth=SIZE*numCol;
+        bHeight=SIZE*numRow;
+
+        reversedFirst=false;
         // l , t , r , b
-        rectangle = new Rect(0, startY, startX, startY+ rectHeight);
-        rectangle2 = new Rect(startX + 50, startY,Constants.SCREEN_WIDTH,startY+rectHeight);
+      //  rectangle = new Rect(0, startY, endY, startY+ rectHeight);
+      //  rectangle2 = new Rect(endY + 50, startY,Constants.SCREEN_WIDTH,startY+rectHeight);
     }
 
-    public boolean playerCollide(RectPlayer player)
-    {
-        if(rectangle.contains(player.getRectangle().left,player.getRectangle().top)||
-                rectangle.contains(player.getRectangle().right,player.getRectangle().top)||
-                rectangle.contains(player.getRectangle().left,player.getRectangle().bottom)||
-                rectangle.contains(player.getRectangle().right,player.getRectangle().bottom))
-        {
-            return true;
-        }
-        return false;
-    }
+
 
 
 
     @Override
     public void draw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawRect(rectangle,paint);
-        canvas.drawRect(rectangle2,paint);
-
-        for(int i=0;i<1;i++) {
-
+        Paint paint= new Paint();
+        for(int i=0;i<numRow;i++) {
             for (int j = 0; j < numCol; j++) {
-
-                canvas.drawBitmap(bitmapArr[i][j],(j*400)+startPosX,(i*400)+startPosY,null);
-
+                canvas.drawBitmap(bitmapArr[i][j],(j*SIZE)+startPosX,(i*SIZE)+startPosY,null);
             }
-
-            }
+        }
+        System.out.println(startPosX+" "+bWidth);
     }
 
     @Override
     public void update() {
-
+       // incrementX();
     }
 }

@@ -48,13 +48,14 @@ public class MainGameActivity extends Activity {
 
         ////////////////////////////////////////////////////////////////
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        Constants.SCREEN_WIDTH = dm.widthPixels;
-        Constants.SCREEN_HEIGHT= dm.heightPixels;
+        Display dm =getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        dm.getSize(size);
+        Constants.SCREEN_WIDTH = size.x;
+        Constants.SCREEN_HEIGHT= size.y;
 
 
         setContentView(new GamePanel(MainGameActivity.this));

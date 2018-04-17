@@ -10,42 +10,25 @@ public class ObstacleManager
     //higher index = lower on screen = higher y value
     private ArrayList<Obstacles> obstacles;
     private int playerGap;
-    private int obstacleGap;
-    private int obstacleHeight;
-    private int color;
+    private Obstacles obs;
 
-    private long startTime;
-
-public ObstacleManager(int playerGap,int obstacleGap,int obstacleHeight,int color)
+public ObstacleManager(int playerGap)
 {
- this.playerGap = playerGap;
- this.obstacleGap= obstacleGap;
- this.obstacleHeight = obstacleHeight;
- this.color = color;
+ this.playerGap=playerGap;
  obstacles = new ArrayList<>();
-
-
- startTime = System.currentTimeMillis();
-
+ obs=new Obstacles(playerGap);
  populateObstacles();
 }
 private void populateObstacles()
 {
-
-        obstacles.add(new Obstacles(obstacleHeight,Constants.SCREEN_WIDTH,0,playerGap));
-        obstacles.add(new Obstacles(obstacleHeight,Constants.SCREEN_WIDTH+100,0,playerGap));
-
+    obstacles.add(new Obstacles(playerGap));
 }
  public void update()
  {
-     int elapsedTime = (int) (System.currentTimeMillis() - startTime);
-     startTime = System.currentTimeMillis();
-     float speed = Constants.SCREEN_HEIGHT/10000.0f;
      for(Obstacles ob : obstacles)
      {
-       // ob.incrementY(speed *elapsedTime);
+       ob.incrementX();
      }
-
  }
 
  public void draw(Canvas canvas)
@@ -53,7 +36,7 @@ private void populateObstacles()
     for(Obstacles ob : obstacles)
     {
         ob.draw(canvas);
-    }
- }
+    }//
 
+ }
 }
