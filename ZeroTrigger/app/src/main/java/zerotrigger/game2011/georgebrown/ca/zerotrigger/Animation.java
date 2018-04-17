@@ -17,12 +17,13 @@ public class Animation {
     public void play()
     {
         isPlaying=true;
+        frameIndex = 0;
+        lastFrame = System.currentTimeMillis();
     }
     public void stop()
     {
         isPlaying = false;
-        frameIndex = 0;
-        lastFrame = System.currentTimeMillis();
+
     }
     private float frameTime;
     private long lastFrame;

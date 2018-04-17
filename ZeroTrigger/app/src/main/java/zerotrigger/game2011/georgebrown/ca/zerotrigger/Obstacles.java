@@ -29,13 +29,23 @@ public class Obstacles implements GameObject
     private int startPosY=Constants.SCREEN_HEIGHT-800;
     private int mapLayout[][]=
             {
-                    {0,1,1,1,1,1,1,1,1,1,1,2},
-                    {0,1,1,1,1,1,1,1,1,1,1,2},
-                    {0,1,1,1,1,1,1,1,1,1,1,2},
-                    {0,1,1,1,1,1,1,1,1,1,1,2}
+                    {0,0,0,0,0,0,0,0,0,0,0,0},
+                    {0,0,5,0,5,0,0,6,7,8,0,9},
+                    {1,2,2,2,2,2,2,2,2,2,2,4},
+                    {4,4,4,4,4,4,4,4,4,4,4,4}
             };
     //Platform images....
-    int platformImg[]={R.drawable.left_floor,R.drawable.middle_floor,R.drawable.right_floor,R.drawable.character};
+    int platformImg[]={R.drawable.empty
+            ,R.drawable.top_left
+            ,R.drawable.top_middle
+            ,R.drawable.top_right
+            ,R.drawable.middle
+            ,R.drawable.single_platform
+            ,R.drawable.long_platform_left
+            ,R.drawable.long_platform_middle
+            ,R.drawable.long_platform_right
+            ,R.drawable.top_middle_2
+    };
     private Bitmap bitmapArr[][]=new Bitmap[numRow][numCol];
 
 
@@ -69,7 +79,28 @@ public class Obstacles implements GameObject
                             mapLayout[i][j]=platformImg[1];
                             break;
                         case 2:
-                            mapLayout[i][j]=platformImg[2];
+                             mapLayout[i][j]=platformImg[2];
+                             break;
+                        case 3:
+                            mapLayout[i][j]=platformImg[3];
+                            break;
+                        case 4:
+                            mapLayout[i][j]=platformImg[4];
+                            break;
+                        case 5:
+                            mapLayout[i][j]=platformImg[5];
+                            break;
+                        case 6:
+                            mapLayout[i][j]=platformImg[6];
+                            break;
+                        case 7:
+                            mapLayout[i][j]=platformImg[7];
+                            break;
+                        case 8:
+                            mapLayout[i][j]=platformImg[8];
+                            break;
+                        case 9:
+                            mapLayout[i][j]=platformImg[9];
                             break;
                     }
 
