@@ -14,14 +14,49 @@ public class RectPlayer implements GameObject{
     private Animation idle;
     private Animation walkLeft;
     private Animation walkRight;
+    private int player_sPosX=50;
+    private int player_sPosY=700;
+    private int player_ePosX=250;
+    private int player_ePosY=900;
+
+    private int speed=10;
 
     private AnimationManager animManager;
-
+    public void decrementPlayerX()
+    {
+        player_sPosX-=speed;
+        player_ePosX-=speed;
+        if ( player_sPosX <= 0) {
+            speed=0;
+        }
+        if ( player_sPosX >= Constants.SCREEN_WIDTH-200) {
+            speed=10;
+        }
+    }
+    public void incrementPlayerX()
+    {
+        player_sPosX+=speed;
+        player_ePosX+=speed;
+        if ( player_sPosX >= Constants.SCREEN_WIDTH-200) {
+            speed=0;
+        }
+        if ( player_sPosX <= 0) {
+            speed=10;
+        }
+    }
     public Rect getRectangle()
     {
         return rectangle;
     }
-
+    public void setPlayerPos()
+    {
+        rectangle.set(player_sPosX, player_sPosY , player_ePosX,  player_ePosY);
+    }
+    public void setState(int s)
+    {
+        int state = s;
+        animManager.playAnim(state);
+    }
 
     public RectPlayer(Rect rectangle, int color)
     {
@@ -30,8 +65,8 @@ public class RectPlayer implements GameObject{
         BitmapFactory bf= new BitmapFactory();
 
         Bitmap idleImg =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
-        Bitmap walk1=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
-        Bitmap walk2=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
+        Bitmap walk1=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_1);
+        Bitmap walk2=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_2);
 
         idle = new Animation(new Bitmap[]{idleImg}, 2);
         walkRight = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
@@ -47,28 +82,17 @@ public class RectPlayer implements GameObject{
     }
     @Override
     public void draw(Canvas canvas) {
-       animManager.draw(canvas,rectangle);
+
+        animManager.draw(canvas,rectangle);
     }
 
     @Override
     public void update() {
         animManager.update();
     }
-    public void update(Point point)
+
+    public void update(int s)
     {
-        //l,t,r,b
-       //rectangle.set(point.x-rectangle.width()/2,point.y-rectangle.height()/2,point.x+rectangle.width()/2,point.y+rectangle.height()/2);
-        float oldLeft = rectangle.left;
-
-        rectangle.set(point.x - rectangle.width()/2, point.y - rectangle.height()/2, point.x + rectangle.width()/2, point.y + rectangle.height()/2);
-
-        int state = 0;
-        if(rectangle.left - oldLeft > 5)
-            state = 1;
-        else if(rectangle.left - oldLeft < -5)
-            state = 2;
-
-        animManager.playAnim(state);
         animManager.update();
     }
 

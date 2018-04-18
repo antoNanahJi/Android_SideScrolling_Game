@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context="zerotrigger.game2011.georgebrown.ca.zerotrigger.MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="507dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/intro_screen_background_img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/PlayBtn"
         android:layout_width="200dp"

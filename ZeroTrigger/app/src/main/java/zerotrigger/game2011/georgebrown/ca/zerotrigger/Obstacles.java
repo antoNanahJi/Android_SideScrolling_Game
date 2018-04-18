@@ -30,9 +30,9 @@ public class Obstacles implements GameObject
     private int mapLayout[][]=
             {
                     {0,0,0,0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0,0,0,0},
                     {0,0,5,0,5,0,0,6,7,8,0,9},
-                    {1,2,2,2,2,2,2,2,2,2,2,4},
-                    {4,4,4,4,4,4,4,4,4,4,4,4}
+                    {1,2,2,2,2,2,2,2,2,2,2,4}
             };
     //Platform images....
     int platformImg[]={R.drawable.empty
@@ -117,7 +117,7 @@ public class Obstacles implements GameObject
         }
 
 
-        scrollingSpeed =2;
+        scrollingSpeed =5;
 
         bWidth=SIZE*numCol;
         bHeight=SIZE*numRow;
