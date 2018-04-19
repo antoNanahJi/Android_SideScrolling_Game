@@ -12,16 +12,45 @@ public class RectPlayer implements GameObject{
     private Rect rectangle;
     private int color;
     private Animation idle;
+    private Animation idleL;
     private Animation walkLeft;
     private Animation walkRight;
-    private int player_sPosX=50;
-    private int player_sPosY=700;
-    private int player_ePosX=250;
-    private int player_ePosY=900;
-
+    public int player_sPosX=50;
+    public int player_sPosY=700;
+    public int player_ePosX=250;
+    public int player_ePosY=900;
+    private int state=0;
     private int speed=10;
 
     private AnimationManager animManager;
+    public void setSpeed(int s)
+    {
+        speed=s;
+    }
+    public int getSPX()
+    {
+        return player_sPosX;
+    }
+    public int getSPY()
+    {
+        return player_sPosY;
+    }
+    public int getEPX()
+    {
+        return player_ePosX;
+    }
+    public int getEPY()
+    {
+        return player_ePosY;
+    }
+    public void setSPX(int n)
+    {
+        player_sPosX=n;
+    }
+    public void setSPY(int n)
+    {
+        player_sPosY=n;
+    }
     public void decrementPlayerX()
     {
         player_sPosX-=speed;
@@ -54,10 +83,13 @@ public class RectPlayer implements GameObject{
     }
     public void setState(int s)
     {
-        int state = s;
+        state = s;
         animManager.playAnim(state);
     }
-
+    public int getState()
+    {
+        return state;
+    }
     public RectPlayer(Rect rectangle, int color)
     {
      this.rectangle = rectangle;
@@ -67,8 +99,10 @@ public class RectPlayer implements GameObject{
         Bitmap idleImg =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
         Bitmap walk1=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_1);
         Bitmap walk2=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_2);
+        Bitmap idleImgL =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
 
         idle = new Animation(new Bitmap[]{idleImg}, 2);
+        idleL = new Animation(new Bitmap[]{idleImgL}, 2);
         walkRight = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
 
         Matrix m = new Matrix();
@@ -78,13 +112,15 @@ public class RectPlayer implements GameObject{
 
         walkLeft = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
 
-        animManager = new AnimationManager(new Animation[]{idle, walkRight, walkLeft});
+        animManager = new AnimationManager(new Animation[]{idle, walkRight, walkLeft,idleL});
     }
     @Override
     public void draw(Canvas canvas) {
 
         animManager.draw(canvas,rectangle);
+
     }
+
 
     @Override
     public void update() {

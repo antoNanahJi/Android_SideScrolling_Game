@@ -15,10 +15,14 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainGameActivity mainGameActivity;
     private MainThread thread;
     private RectPlayer player;
+    private ArrayList<Bullet> bullets;
+    private Obstacles obstacles;
     private Point playerPoint;
     private ObstacleManager obstacleManager;
     private Bitmap left_Btn;
@@ -32,11 +36,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private boolean moveMap=false;
     private boolean movePlayerR=false;
     private boolean movePlayerL=false;
+    private boolean moveBullet=false;
     private Bitmap background;
     private Bitmap pauseImg;
+    private Bitmap attackBtnImg;
     private int pause_Btn_PosX=Constants.SCREEN_WIDTH - 200;
     private int pause_Btn_PosY=0;
     private int pause_Btn_SIZE=200;
+    private int attack_Btn_PosX=Constants.SCREEN_WIDTH - 250;
+    private int attack_Btn_PosY=Constants.SCREEN_HEIGHT-300;
+    private int attack_Btn_SIZE=200;
+
 
     public GamePanel(Context context)
     {
@@ -54,8 +64,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         left_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.left_btn,options);
         background=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.back_img,options);
         pauseImg=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.pause_btn,options);
+        attackBtnImg=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.attack_btn,options);
         obstacleManager = new ObstacleManager(200);
+        obstacles=new Obstacles(3);
         setFocusable(true);
+        bullets = new ArrayList<>();
     }
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
@@ -106,7 +119,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             }
             if ((x > right_Btn_PosX && x < right_Btn_PosX + right_Btn_SIZE)) {
                 if (y > right_Btn_PosY && y < right_Btn_PosY + right_Btn_SIZE) {
-                    player.setState(2);
+                    player.setState(3);
                     movePlayerR=true;
                 }
             }
@@ -114,6 +127,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 if (y > pause_Btn_PosY && y < pause_Btn_PosY + pause_Btn_SIZE) {
                     //Intent intentInstance = new Intent(Constants.CURRENT_CONTEXT, MainActivity.class);
                    // mainGameActivity.startActivity(intentInstance);
+                }
+            }
+            if ((x > attack_Btn_PosX && x < attack_Btn_PosX + attack_Btn_SIZE)) {
+                if (y > attack_Btn_PosY && y < attack_Btn_PosY + attack_Btn_SIZE) {
+                    if(player.getState()==0||player.getState()==1)
+                        bullets.add(new Bullet(player.player_sPosX+50,player.player_sPosY+50,1));
+                    if(player.getState()==2||player.getState()==3)
+                        bullets.add(new Bullet(player.player_sPosX+50,player.player_sPosY+50,2));
+
+                    moveBullet=true;
                 }
             }
         }
@@ -142,7 +165,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         player.setPlayerPos();
         player.update();
          if(moveMap)
-            obstacleManager.update();
+             obstacles.update();
+       obstacles.MapCollision();
+       if(moveBullet) {
+           for (Bullet ob : bullets) {
+               ob.update();
+           }
+       }
     }
     @Override
     public void draw(Canvas canvas)
@@ -154,11 +183,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawBitmap(pauseImg,Constants.SCREEN_WIDTH-200,0,null);
 
         //drawing Map
-        obstacleManager.draw(canvas);
+       // obstacleManager.draw(canvas);
+        obstacles.draw(canvas);
         canvas.drawBitmap(right_Btn,250,Constants.SCREEN_HEIGHT-200,null);
         canvas.drawBitmap(left_Btn,0,Constants.SCREEN_HEIGHT-200,null);
+        canvas.drawBitmap(attackBtnImg,attack_Btn_PosX,attack_Btn_PosY,null);
         //drawing player
         player.draw(canvas);
+        if(moveBullet) {
+            for (Bullet ob : bullets) {
+                ob.draw(canvas);
+            }
+        }
         //drawing enemy
     }
 }

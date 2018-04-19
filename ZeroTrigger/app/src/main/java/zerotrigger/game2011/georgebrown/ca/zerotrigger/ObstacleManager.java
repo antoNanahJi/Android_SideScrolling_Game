@@ -28,6 +28,7 @@ private void populateObstacles()
      for(Obstacles ob : obstacles)
      {
        ob.incrementX();
+       // ob.MapCollition();
      }
  }
 
