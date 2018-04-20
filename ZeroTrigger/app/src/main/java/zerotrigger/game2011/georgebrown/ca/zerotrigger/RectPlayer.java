@@ -94,8 +94,8 @@ public class RectPlayer implements GameObject{
     }
     public RectPlayer(Rect rectangle, int color)
     {
-     this.rectangle = rectangle;
-     this.color = color;
+        this.rectangle = rectangle;
+        this.color = color;
         BitmapFactory bf= new BitmapFactory();
 
         Bitmap idleImg =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_idle_r);
@@ -119,6 +119,7 @@ public class RectPlayer implements GameObject{
         walkLeft = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
 
         animManager = new AnimationManager(new Animation[]{idle, walkRight, walkLeft,idleL,attackRight,attackLeft});
+        setState(0);
     }
     @Override
     public void draw(Canvas canvas) {

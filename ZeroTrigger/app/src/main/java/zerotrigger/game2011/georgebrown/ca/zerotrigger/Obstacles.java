@@ -11,6 +11,7 @@ import android.widget.ImageView;
 public class Obstacles implements GameObject
 {
     RectPlayer player;
+
     boolean aRock=false;
     private int numRow=4;
     private int numCol=12;
@@ -20,8 +21,8 @@ public class Obstacles implements GameObject
     int startY;
     int endY;
     int SIZE=200;
-    int obstacleX[]=new int[numRow*numCol];
-    int obstacleY[]=new int[numRow*numCol];
+    int obstacleX[][]=new int[numRow][numCol];
+    int obstacleY[][]=new int[numRow][numCol];
     int scrollingSpeed;
     //Bitmap width and height
     int bWidth;
@@ -29,10 +30,6 @@ public class Obstacles implements GameObject
     long startTime;
 
     boolean reversedFirst;
-
-
-
-
     private int mapLayout[][]=
             {
                     {0,0,0,0,0,0,0,0,0,0,0,0},
@@ -69,12 +66,11 @@ public class Obstacles implements GameObject
            // reversedFirst = !reversedFirst;
 
         }
-
     }
     public Obstacles( int playerGap)
     {
         player = new RectPlayer(new Rect(100,100,300,300), Color.GREEN);
-        for(int i=0;i<numRow;i++) {
+         for(int i=0;i<numRow;i++) {
             for (int j = 0; j < numCol; j++) {
                  switch (mapLayout[i][j])
                     {
@@ -121,8 +117,10 @@ public class Obstacles implements GameObject
 
             }
         }
+
         BitmapFactory.Options options= new BitmapFactory.Options();
         options.inScaled=false;
+
         for(int i=0;i<numRow;i++) {
             for (int j = 0; j < numCol; j++) {
 
@@ -141,20 +139,22 @@ public class Obstacles implements GameObject
         // l , t , r , b
       //  rectangle = new Rect(0, startY, endY, startY+ rectHeight);
       //  rectangle2 = new Rect(endY + 50, startY,Constants.SCREEN_WIDTH,startY+rectHeight);
+
     }
 
 
     @Override
     public void draw(Canvas canvas) {
+
         Paint paint= new Paint();
+        paint.setColor(Color.GREEN);
+
         for(int i=0;i<numRow;i++) {
             for (int j = 0; j < numCol; j++) {
                 canvas.drawBitmap(bitmapArr[i][j],(j*SIZE)+startPosX,(i*SIZE)+startPosY,null);
-                obstacleX[j]=(j*SIZE)+startPosX;
-                obstacleY[j]=(j*SIZE)+startPosY;
-
             }
         }
+
 
     }
 
@@ -162,55 +162,17 @@ public class Obstacles implements GameObject
     public void update() {
        incrementX();
     }
-    public void MapCollision()
+    public boolean MapCollision(RectPlayer player)
     {
-
-        for (int r =0; r < numRow ; r++) {
-            for (int c = 0; c < numCol; c++) {
-                if (aRock) {
-                    //Get the distance from the center of the player to the center of a rock
-                    int vectorX = (player.getSPX() +SIZE/2 ) - (obstacleX[c] + (SIZE / 2));
-                    int vectorY = (player.getSPY() + (player.getEPY() / 2)) - (obstacleY[c] + (SIZE / 2));
-
-                    //var vectorX = (player.x + (player.width/2) - 10) - (map[r][c].x + (SIZE/2));
-                    //var vectorY = (player.y + (player.height/2)) - (map[r][c].y + (SIZE/2));
-
-                    int boxWidth = ((player.getEPX() / 2) - 10) + SIZE / 2;
-                    if(Math.abs(vectorX) < boxWidth && Math.abs(vectorY) < SIZE) {
-                        int cX = boxWidth - Math.abs(vectorX);
-                        int cY = SIZE - Math.abs(vectorY);
-                        if( cX >= cY)
-                        {
-                            //We are on ground
-                            if ( vectorY <= 0 && ((((player.getSPX() + SIZE - 30) >= (obstacleX[c] )) || ( (player.getSPX() + 30) >= (obstacleX[c] ) )) && ((player.getSPX() + 30) <= (obstacleX[c] + SIZE))))
-                            {
-
-
-
-                                player.setSPY(obstacleY[c] - player.getSPY());
-
-                            }
-
-                        }else {
-                            if (vectorX >= 0 && vectorX <= 170) {
-
-                                //player.img = images[1];
-                                player.setSPX(obstacleX[c] + SIZE - 20);
-                                System.out.println("Left");
-                                player.setSpeed(0);
-
-                            }
-                            //Right side collision
-                            else if (((player.getSPX() + SIZE - 20) >= obstacleX[c]) && (player.getEPX() - 20) <= (obstacleX[c] + SIZE / 2)) {
-                                System.out.println("Right");
-                                //player.img = images[0];
-                                player.setSPX(obstacleX[c] - (player.getEPX() - 20));
-                                player.setSpeed(0);
-                            }
-                        }
-                    }
-                }
+        /*
+        for(int i=0;i<numRow;i++) {
+            for (int j = 0; j < numCol; j++) {
+                if( Rect.intersects(rect[i][j],player.getRectangle())==true )
+                    return true;
             }
         }
+
+        */
+        return false;
     }
 }

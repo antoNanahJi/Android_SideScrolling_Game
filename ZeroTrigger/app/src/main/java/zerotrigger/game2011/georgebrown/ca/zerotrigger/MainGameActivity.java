@@ -63,6 +63,7 @@ public class MainGameActivity extends Activity {
 
     }
 
+
    /* @Override
     protected void onPause()
     {

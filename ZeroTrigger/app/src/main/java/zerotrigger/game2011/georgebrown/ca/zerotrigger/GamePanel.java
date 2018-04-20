@@ -46,6 +46,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private int attack_Btn_PosX=Constants.SCREEN_WIDTH - 250;
     private int attack_Btn_PosY=Constants.SCREEN_HEIGHT-300;
     private int attack_Btn_SIZE=200;
+    public boolean isPause=false;
+    public Coin coin;
 
 
     public GamePanel(Context context)
@@ -69,6 +71,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         obstacles=new Obstacles(3);
         setFocusable(true);
         bullets = new ArrayList<>();
+        coin =new Coin(350,730);
     }
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
@@ -125,8 +128,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             }
             if ((x > pause_Btn_PosX && x < pause_Btn_PosX + pause_Btn_SIZE)) {
                 if (y > pause_Btn_PosY && y < pause_Btn_PosY + pause_Btn_SIZE) {
-                    //Intent intentInstance = new Intent(Constants.CURRENT_CONTEXT, MainActivity.class);
-                   // mainGameActivity.startActivity(intentInstance);
+
+                    this.clearFocus();
+
                 }
             }
             if ((x > attack_Btn_PosX && x < attack_Btn_PosX + attack_Btn_SIZE)) {
@@ -178,12 +182,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         player.update();
          if(moveMap)
              obstacles.update();
-       obstacles.MapCollision();
+
        if(moveBullet) {
            for (Bullet ob : bullets) {
                ob.update();
            }
        }
+       // if(coin.CollisionWithCoin(player))
+           // player.setSpeed(0);
     }
     @Override
     public void draw(Canvas canvas)
@@ -202,11 +208,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawBitmap(attackBtnImg,attack_Btn_PosX,attack_Btn_PosY,null);
         //drawing player
         player.draw(canvas);
+        //drawing bullets
         if(moveBullet) {
             for (Bullet ob : bullets) {
                 ob.draw(canvas);
             }
         }
+        //drawing coins
+        coin.draw(canvas);
         //drawing enemy
     }
 }
