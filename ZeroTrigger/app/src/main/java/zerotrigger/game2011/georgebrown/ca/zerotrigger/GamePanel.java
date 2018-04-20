@@ -119,7 +119,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             }
             if ((x > right_Btn_PosX && x < right_Btn_PosX + right_Btn_SIZE)) {
                 if (y > right_Btn_PosY && y < right_Btn_PosY + right_Btn_SIZE) {
-                    player.setState(3);
+                    player.setState(2);
                     movePlayerR=true;
                 }
             }
@@ -131,10 +131,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             }
             if ((x > attack_Btn_PosX && x < attack_Btn_PosX + attack_Btn_SIZE)) {
                 if (y > attack_Btn_PosY && y < attack_Btn_PosY + attack_Btn_SIZE) {
-                    if(player.getState()==0||player.getState()==1)
-                        bullets.add(new Bullet(player.player_sPosX+50,player.player_sPosY+50,1));
-                    if(player.getState()==2||player.getState()==3)
-                        bullets.add(new Bullet(player.player_sPosX+50,player.player_sPosY+50,2));
+                    if(player.getState()==0||player.getState()==1) {
+                        player.setState(4);
+                        bullets.add(new Bullet(player.player_sPosX + 50, player.player_sPosY + 70, 1));
+                    }
+                    if(player.getState()==2||player.getState()==3) {
+                        player.setState(5);
+                        bullets.add(new Bullet(player.player_sPosX + 50, player.player_sPosY + 70, 2));
+                    }
 
                     moveBullet=true;
                 }
@@ -143,9 +147,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
             moveMap = false;
-            player.setState(0);
-            movePlayerL=false;
-            movePlayerR=false;
+            if(movePlayerL || player.getState()==4)
+            {
+                movePlayerL=false;
+                player.setState(0);
+            }
+            if(movePlayerR || player.getState()==5)
+            {
+                movePlayerR=false;
+                player.setState(3);
+            }
+
         }
         return true;
         //return super.onTouchEvent(event);

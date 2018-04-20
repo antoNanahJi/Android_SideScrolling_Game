@@ -15,6 +15,8 @@ public class RectPlayer implements GameObject{
     private Animation idleL;
     private Animation walkLeft;
     private Animation walkRight;
+    private Animation attackRight;
+    private Animation attackLeft;
     public int player_sPosX=50;
     public int player_sPosY=700;
     public int player_ePosX=250;
@@ -96,13 +98,17 @@ public class RectPlayer implements GameObject{
      this.color = color;
         BitmapFactory bf= new BitmapFactory();
 
-        Bitmap idleImg =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
+        Bitmap idleImg =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_idle_r);
         Bitmap walk1=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_1);
         Bitmap walk2=bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_walk_2);
-        Bitmap idleImgL =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character);
+        Bitmap idleImgL =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_idle_l);
+        Bitmap attackImgR =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_attack_r);
+        Bitmap attackImgL =bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.character_attack_l);
 
         idle = new Animation(new Bitmap[]{idleImg}, 2);
         idleL = new Animation(new Bitmap[]{idleImgL}, 2);
+        attackRight = new Animation(new Bitmap[]{attackImgR}, 2);
+        attackLeft = new Animation(new Bitmap[]{attackImgL}, 2);
         walkRight = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
 
         Matrix m = new Matrix();
@@ -112,7 +118,7 @@ public class RectPlayer implements GameObject{
 
         walkLeft = new Animation(new Bitmap[]{walk1, walk2}, 0.5f);
 
-        animManager = new AnimationManager(new Animation[]{idle, walkRight, walkLeft,idleL});
+        animManager = new AnimationManager(new Animation[]{idle, walkRight, walkLeft,idleL,attackRight,attackLeft});
     }
     @Override
     public void draw(Canvas canvas) {
