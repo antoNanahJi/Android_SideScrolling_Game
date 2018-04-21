@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainGameActivity mainGameActivity;
@@ -49,6 +52,29 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public boolean isPause=false;
     public Coin coin;
 
+    ///////////////////////////
+    // Wolf variables
+    public Wolf wolf;
+    private boolean isWolfAlive = true;
+
+    ///////////////////////////
+    // Timer
+    //////////////////////////
+    private long startTime = System.currentTimeMillis();
+
+    public Paint textTime = new Paint();
+
+    public Paint getTextTime() {
+        return textTime;
+    }
+
+    public void setTextTime(Paint textTime) {
+        textTime.setTextSize(20);
+        textTime.setColor(Color.RED);
+        this.textTime = textTime;
+    }
+
+    private MyCountdownTimer timer;
 
     public GamePanel(Context context)
     {
@@ -72,6 +98,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
         bullets = new ArrayList<>();
         coin =new Coin(350,730);
+
+        // Wolf object
+        wolf = new Wolf(new Rect(125,100,300,300));
+
     }
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
@@ -188,6 +218,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                ob.update();
            }
        }
+
+       if(isWolfAlive)
+       {
+           isWolfAlive = false;
+           wolf.setWolf();
+           wolf.update();
+       }
+
        // if(coin.CollisionWithCoin(player))
            // player.setSpeed(0);
     }
@@ -214,8 +252,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 ob.draw(canvas);
             }
         }
+
         //drawing coins
         coin.draw(canvas);
+
         //drawing enemy
+        wolf.draw(canvas);
     }
 }

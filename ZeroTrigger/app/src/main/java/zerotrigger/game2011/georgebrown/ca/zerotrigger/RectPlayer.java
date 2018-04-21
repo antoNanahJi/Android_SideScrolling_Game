@@ -53,6 +53,8 @@ public class RectPlayer implements GameObject{
     {
         player_sPosY=n;
     }
+
+
     public void decrementPlayerX()
     {
         player_sPosX-=speed;
@@ -88,10 +90,12 @@ public class RectPlayer implements GameObject{
         state = s;
         animManager.playAnim(state);
     }
+
     public int getState()
     {
         return state;
     }
+
     public RectPlayer(Rect rectangle, int color)
     {
         this.rectangle = rectangle;

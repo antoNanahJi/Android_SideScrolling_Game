@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Picture;
 import android.graphics.Point;
 import android.media.Image;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainGameActivity extends Activity {
 
@@ -48,6 +50,9 @@ public class MainGameActivity extends Activity {
 
         ////////////////////////////////////////////////////////////////
 
+
+
+
        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -59,7 +64,6 @@ public class MainGameActivity extends Activity {
 
 
         setContentView(new GamePanel(MainGameActivity.this));
-
 
     }
 
