@@ -57,24 +57,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public Wolf wolf;
     private boolean isWolfAlive = true;
 
-    ///////////////////////////
-    // Timer
-    //////////////////////////
-    private long startTime = System.currentTimeMillis();
-
-    public Paint textTime = new Paint();
-
-    public Paint getTextTime() {
-        return textTime;
-    }
-
-    public void setTextTime(Paint textTime) {
-        textTime.setTextSize(20);
-        textTime.setColor(Color.RED);
-        this.textTime = textTime;
-    }
-
-    private MyCountdownTimer timer;
 
     public GamePanel(Context context)
     {

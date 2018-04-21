@@ -25,9 +25,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainGameActivity extends Activity {
 
     //private BackgroundView backgroundView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,10 @@ public class MainGameActivity extends Activity {
         ////////////////////////////////////////////////////////////////
 
 
-
-
        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        Display dm =getWindowManager().getDefaultDisplay();
+        Display dm = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         dm.getSize(size);
         Constants.SCREEN_WIDTH = size.x;
@@ -64,8 +65,9 @@ public class MainGameActivity extends Activity {
 
 
         setContentView(new GamePanel(MainGameActivity.this));
-
     }
+
+
 
 
    /* @Override
