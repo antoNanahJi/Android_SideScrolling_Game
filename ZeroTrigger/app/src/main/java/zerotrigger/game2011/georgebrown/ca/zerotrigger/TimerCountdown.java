@@ -22,26 +22,24 @@ import java.util.logging.LogRecord;
 
 public class TimerCountdown extends Activity{
     public TextView textView;
+    int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_game);
 
-
         textView = (TextView) findViewById(R.id.timer);
 
+        new CountDownTimer(30000, 1000){
+            public void onTick(long millisUntilFinished){
 
-        new CountDownTimer(60000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                textView.setText("seconds remaining: " + millisUntilFinished / 1000);
+                textView.setText(String.valueOf(counter));
+                counter++;
             }
-
-            public void onFinish() {
-                textView.setText("done!");
+            public  void onFinish(){
+                textView.setText("FINISH!");
             }
         }.start();
     }
