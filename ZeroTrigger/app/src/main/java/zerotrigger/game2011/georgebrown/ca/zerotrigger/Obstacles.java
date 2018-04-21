@@ -14,7 +14,7 @@ public class Obstacles implements GameObject
 
     boolean aRock=false;
     private int numRow=4;
-    private int numCol=12;
+    private int numCol=30;
     private int startPosX=0;
     private int startPosY=Constants.SCREEN_HEIGHT-800;
     int xClip;
@@ -32,10 +32,11 @@ public class Obstacles implements GameObject
     boolean reversedFirst;
     private int mapLayout[][]=
             {
-                    {0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0,0,0,0},
-                    {0,0,5,0,5,0,0,6,7,8,0,9},
-                    {1,2,2,2,2,2,2,2,2,2,2,4}
+
+                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                    {0,0,5,0,5,0,0,6,7,8,0,5,0,0,5,0,0,6,7,8,0,0,0,5,0,0,5,0,0,0},
+                    {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3}
             };
     //Platform images....
     int platformImg[]={R.drawable.empty

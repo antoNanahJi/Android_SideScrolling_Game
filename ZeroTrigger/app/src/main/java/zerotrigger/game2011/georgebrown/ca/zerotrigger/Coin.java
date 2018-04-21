@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 
 /**
@@ -18,6 +20,8 @@ public class Coin implements GameObject {
     private int coin_PosY;
     private int coin_width=100;
     private int coin_height=21;
+    private int speed=5;
+    private boolean destroyMe=false;
 
 
     private Animation coin_anim;
@@ -28,7 +32,7 @@ public class Coin implements GameObject {
     {
         coin_PosX=xPos;
         coin_PosY=yPos;
-
+        destroyMe=false;
 
         BitmapFactory.Options options= new BitmapFactory.Options();
         options.inScaled=false;
@@ -49,16 +53,37 @@ public class Coin implements GameObject {
            }
         return false;
     }
+    public void decrementX() {
+        coin_PosX -= speed;
+        coin.set(coin_PosX,coin_PosY,coin_PosX+100,coin_PosY+100);
+    }
+    public void DestroyCoin()
+    {
+        destroyMe=true;
+    }
     @Override
     public void draw(Canvas canvas)
     {
+        Paint paint = new Paint();
+        if(!destroyMe) {
 
-        animManager.draw(canvas,coin);
+            //paint.setColor(Color.RED);
+            animManager.draw(canvas,coin);
+            //canvas.drawRect(coin, paint);
+        }
+        if(destroyMe) {
+            paint.setColor(Color.TRANSPARENT);
+            canvas.drawRect(coin, paint);
+            coin.set(0,0,0,0);
+        }
     }
     @Override
     public void update()
     {
         animManager.update();
+        if(!destroyMe) {
+            decrementX();
+        }
     }
 
 }
