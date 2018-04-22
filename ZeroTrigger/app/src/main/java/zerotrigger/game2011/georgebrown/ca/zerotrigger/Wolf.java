@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -18,69 +19,42 @@ import android.view.SurfaceView;
 
 public class Wolf implements GameObject {
     private Rect wolf;
-
+    private RectPlayer player;
+    private Bitmap wolf_img;
     private int color;
+
     private int wolf_PosX = 100;
     private int wolf_PosY = 730;
     private int wolf_spawnX = 250;
     private int wolf_spawnY = 900;
+
     private int state=0;
+    private int speed = 5;
+
     private Animation wolfidle_anim;
     private Animation wolfattack_anim;
     private Animation wolfrecover_anim;
 
     private AnimationManager animManager;
-    /////////////////////////////////////////
-    // wolf position getters and setters
-    /////////////////////////////////////////
-
-    public void setWolf_PosX(int wolf_PosX) {
-        this.wolf_PosX = wolf_PosX;
-    }
-    public void setWolf_PosY(int wolf_PosY) {
-        this.wolf_PosY = wolf_PosY;
-    }
-    public void setWolf_spawnX(int wolf_spawnX) {this.wolf_spawnX = wolf_spawnX;}
-    public void setWolf_spawnY(int wolf_spawnY) {this.wolf_spawnY = wolf_spawnY;}
-
-    public int getWolf_PosY() {
-        return wolf_PosY;
-    }
-    public int getWolf_PosX() {
-        return wolf_PosX;
-    }
-    public int getWolf_spawnX() {return wolf_spawnX;}
-    public int getWolf_spawnY() {return wolf_spawnY;}
 
 
-
-    /////////////////////////////////////////
-    // Get and set wolf rect
-    /////////////////////////////////////////
-    public Rect getWolf() {return wolf;}
-
-    public void setWolf() {
-        wolf.set(wolf_PosX, wolf_PosY, wolf_spawnX, wolf_spawnY);
-    }
-
-    public void setState(int s)
-    {
-        state = s;
-        animManager.playAnim(state);
-    }
-
-    public int getState(){return state;}
 
     /////////////////////////////////////////
     // Wolf constructor
     /////////////////////////////////////////
 
-    public Wolf(Rect wolf)
+    public Wolf(int xPos, int yPos)
     {
-        this.wolf = wolf;
+        wolf_PosX = xPos;
+        wolf_PosY = yPos;
 
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
         BitmapFactory bf = new BitmapFactory();
 
+        player = new RectPlayer(new Rect(125, 100, 300, 300), Color.GREEN);
+        wolf = new Rect(wolf_PosX, wolf_PosY, wolf_PosX+100, wolf_PosY+100);
         /////////////////////////////////////////
         // Wolf idle images
         /////////////////////////////////////////
@@ -138,16 +112,23 @@ public class Wolf implements GameObject {
         wolf_idle3 = Bitmap.createBitmap(wolf_idle3, 0, 0, wolf_idle3.getWidth(), wolf_idle3.getHeight(), matrix, false);
 
         animManager = new AnimationManager(new Animation[]{wolfidle_anim, wolfattack_anim, wolfrecover_anim});
-        setState(state);
+        animManager.playAnim(0);
     }
 
-    /*public void AnimateWolf()
+    public boolean CollisionWithWolf(RectPlayer player)
     {
-        if(state == 0) {setState(state);}
-        else if(state == 1){ setState(state);}
-        else if(state == 2){setState(state);}
-        state++;
-    }*/
+        if(Rect.intersects(wolf, player.getRectangle()) == true)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void decrementX()
+    {
+        wolf_PosX -= speed;
+        wolf.set(wolf_PosX, wolf_PosY, wolf_PosX+100, wolf_PosY+100);
+    }
 
     @Override
     public void draw(Canvas canvas) {
