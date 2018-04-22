@@ -49,7 +49,8 @@ public class Coin implements GameObject {
     public boolean CollisionWithCoin(RectPlayer player)
     {
       if( Rect.intersects(coin,player.getRectangle())==true )
-      {   return true;
+      {
+          return true;
            }
         return false;
     }
