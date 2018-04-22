@@ -1,5 +1,37 @@
 package zerotrigger.game2011.georgebrown.ca.zerotrigger;
-
+//Zero Trigger
+//Andre Reano 101075780
+//Anto  Nanah Ji 101103788
+//Logan King 101100360
+//Created March 28th 2018
+//Side Scrolling Android Game
+     /*  Revision History
+        Fixing Enemy/Player movement April 21th,2018
+        added Menu sound April 21th,2018
+        added Instruction Screen April 21th,2018
+        updates to wolf anim April 21th,2018
+        Adding Score/HealthBar/Timer/GameOver April 21th,2018
+        Working on timer April 20th,2018
+        Wolf enemy April 20th,2018
+        Commits on Apr 20, 2018
+        Added Coins April 20th,2018
+        Adding Character Animations April 19,2018
+        Added Bullets April 19th,2018
+        Added Buttons April 18th, 2018
+        New Map Tiles April 17th,2018
+        Bg scroll code April 16th,2018
+        Setting Map Array April 14th, 2018
+        Changed from portrait to landscape April 13,2018
+        LogoDesign April 13,2018
+        heiarchy setup April 12,2018
+        Character/Forest Sprites April 11, 2018
+        Drew an example of level Apr 9,2018
+        Setting Scenes Mar 29,2018
+        Updated External Document March 28
+        Interface idea 25 days ago
+        External Game Document committed 25 days ago
+        Initial commit committed 25 days ago
+*/
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,20 +79,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private int attack_Btn_SIZE=200;
 
     //Timer variables
-    float mTimer=300.0f;
+    float mTimer=300.0f; //sets timer
     long startTime, endTime;
     double diff;
     String minutes=String.valueOf(mTimer);
     String seconds="0";
     Paint paint = new Paint();
     //score variables
-    private int mScore=0;
-    private ArrayList<Coin> coins;
+    private int mScore=0; //initial score
+    private ArrayList<Coin> coins; //array holding coins
     private int coinX=0;
-    private Bitmap coin_img;
+    private Bitmap coin_img; //coin bitmap
     //health variables
-    private int mHealth=30;
-    private Bitmap health_img;
+    private int mHealth=30; //starting health
+    private Bitmap health_img;   //Health heart Bitmaps
     private Bitmap health_img_1;
     private Bitmap health_img_2;
     //game over variables
@@ -70,7 +102,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     ///////////////////////////
     // Wolf variables
-    private ArrayList<Wolf> wolves;
+    private ArrayList<Wolf> wolves; //Array holdiing wolves
     public Wolf wolf;
     public int wolfX = 0;
     private boolean isWolfAlive = true;
@@ -89,11 +121,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         BitmapFactory.Options options= new BitmapFactory.Options();
         options.inScaled=false;
 
-        right_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.right_btn,options);
-        left_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.left_btn,options);
-        background=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.back_img,options);
+        right_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.right_btn,options); //right touch button bitmap
+        left_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.left_btn,options);//left touch button bitmap
+        background=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.back_img,options);//back touch button bitmap
 
-        attackBtnImg=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.attack_btn,options);
+        attackBtnImg=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.attack_btn,options);//attack button bitmap
 
 
         obstacleManager = new ObstacleManager(200);
@@ -101,7 +133,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
 
         //Bullets List
-        bullets = new ArrayList<>();
+        bullets = new ArrayList<>(); //array holding bullets
 
         //Coin object
         coins=new ArrayList<>();
@@ -145,7 +177,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
         return false;
     }
-    void GeneratingStuff()
+    void GeneratingStuff() //generates wolves, coins ,update timer
     {
         endTime = System.nanoTime();
         diff = (endTime - startTime)/1e6;
@@ -176,7 +208,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
-    void setHealthBar(int value)
+    void setHealthBar(int value) //sets health according to heart image amount.
     {
        mHealth=value;
         BitmapFactory.Options options= new BitmapFactory.Options();
