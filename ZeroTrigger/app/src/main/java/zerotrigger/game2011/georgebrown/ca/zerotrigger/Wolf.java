@@ -138,14 +138,24 @@ public class Wolf implements GameObject {
         wolf_idle1 = Bitmap.createBitmap(wolf_idle1, 0, 0, wolf_idle1.getWidth(), wolf_idle1.getHeight(), matrix, false);
         wolf_idle2 = Bitmap.createBitmap(wolf_idle2, 0, 0, wolf_idle2.getWidth(), wolf_idle2.getHeight(), matrix, false);
         wolf_idle3 = Bitmap.createBitmap(wolf_idle3, 0, 0, wolf_idle3.getWidth(), wolf_idle3.getHeight(), matrix, false);
+        wolf_atk1 = Bitmap.createBitmap(wolf_atk1, 0, 0, wolf_atk1.getWidth(), wolf_atk1.getHeight(), matrix, false);
+        wolf_atk2 = Bitmap.createBitmap(wolf_atk2, 0, 0, wolf_atk2.getWidth(), wolf_atk2.getHeight(), matrix, false);
+        wolf_atk3 = Bitmap.createBitmap(wolf_atk3, 0, 0, wolf_atk3.getWidth(), wolf_atk3.getHeight(), matrix, false);
+        wolf_atk4 = Bitmap.createBitmap(wolf_atk4, 0, 0, wolf_atk4.getWidth(), wolf_atk4.getHeight(), matrix, false);
+        wolf_atk5 = Bitmap.createBitmap(wolf_atk5, 0, 0, wolf_atk5.getWidth(), wolf_atk5.getHeight(), matrix, false);
+        wolf_atk6 = Bitmap.createBitmap(wolf_atk6, 0, 0, wolf_atk6.getWidth(), wolf_atk6.getHeight(), matrix, false);
+        wolfRec1 = Bitmap.createBitmap(wolfRec1, 0, 0, wolfRec1.getWidth(), wolfRec1.getHeight(), matrix, false);
+        wolfRec2 = Bitmap.createBitmap(wolfRec2, 0, 0, wolfRec2.getWidth(), wolfRec2.getHeight(), matrix, false);
+        wolfRec3 = Bitmap.createBitmap(wolfRec3, 0, 0, wolfRec3.getWidth(), wolfRec3.getHeight(), matrix, false);
         /////////////////////////////////////////
         // Creating animation object
         /////////////////////////////////////////
-        wolfidle_anim = new Animation(new Bitmap[]{wolf_idle1, wolf_idle2, wolf_idle3}, 0.5f);
-        wolfattack_anim = new Animation(new Bitmap[]{wolf_atk1, wolf_atk2, wolf_atk3, wolf_atk4, wolf_atk5, wolf_atk6}, 0.5f);
-        wolfrecover_anim = new Animation(new Bitmap[]{wolfRec1, wolfRec2, wolfRec3}, 0.5f);
+        wolfidle_anim = new Animation(new Bitmap[]{wolf_idle1, wolf_idle2, wolf_idle3, wolf_atk1, wolf_atk2,
+                wolf_atk3, wolf_atk4, wolf_atk5, wolf_atk6, wolfRec1, wolfRec2, wolfRec3}, 3.0f);
+        //wolfattack_anim = new Animation(new Bitmap[]{wolf_atk1, wolf_atk2, wolf_atk3, wolf_atk4, wolf_atk5, wolf_atk6}, 0.5f);
+        //wolfrecover_anim = new Animation(new Bitmap[]{wolfRec1, wolfRec2, wolfRec3}, 0.5f);
 
-        animManager = new AnimationManager(new Animation[]{wolfidle_anim, wolfattack_anim, wolfrecover_anim});
+        animManager = new AnimationManager(new Animation[]{wolfidle_anim});
 
     }
 

@@ -203,7 +203,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     void  spawnWolf()
     {
         if (wolfX < 5000) {
-            wolves.add(new Wolf(650 + wolfX, 680));
+            wolves.add(new Wolf(650 + wolfX, 685));
             wolfX += 1000;
         }
     }
