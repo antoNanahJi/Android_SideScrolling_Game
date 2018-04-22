@@ -25,8 +25,13 @@ public class Bullet implements GameObject {
     private int state=0;
     private Animation bulletR;
     private Animation bulletL;
+    private boolean destroyMe=false;
 
     private AnimationManager animManager;
+    public Rect getRectangle()
+    {
+        return bullet;
+    }
 
     public Bullet( int xPos,int yPos,int st)
     {
@@ -61,18 +66,35 @@ public class Bullet implements GameObject {
         bullet.set(bullet_PosX,bullet_PosY,bullet_PosX+100,bullet_PosY+50);
         animManager.playAnim(1);
     }
+    public void DestroyBullet()
+    {
+        destroyMe=true;
+    }
     @Override
     public void draw(Canvas canvas)
     {
-        animManager.draw(canvas,bullet);
+        Paint paint = new Paint();
+        if(!destroyMe) {
+
+            //paint.setColor(Color.RED);
+            animManager.draw(canvas,bullet);
+            //canvas.drawRect(coin, paint);
+        }
+        if(destroyMe) {
+            paint.setColor(Color.TRANSPARENT);
+            canvas.drawRect(bullet, paint);
+            bullet.set(0,0,0,0);
+        }
     }
     @Override
     public void update()
     {
-        if(state==1 || state==0)
-            incrementX();
-        if(state==2)
-            decrementX();
-        animManager.update();
+        if(!destroyMe) {
+            if (state == 1 || state == 0)
+                incrementX();
+            if (state == 2)
+                decrementX();
+            animManager.update();
+        }
     }
 }

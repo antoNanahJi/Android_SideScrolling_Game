@@ -21,7 +21,7 @@ public class Coin implements GameObject {
     private int coin_PosY;
     private int coin_width=100;
     private int coin_height=21;
-    private int speed=5;
+    private int speed=7;
     private boolean destroyMe=false;
 
 

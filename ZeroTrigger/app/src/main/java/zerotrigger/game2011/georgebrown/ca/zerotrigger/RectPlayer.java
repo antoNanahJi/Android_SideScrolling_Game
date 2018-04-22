@@ -22,7 +22,7 @@ public class RectPlayer implements GameObject{
     public int player_ePosX=250;
     public int player_ePosY=900;
     private int state=0;
-    private int speed=10;
+    private int speed=15;
 
     private AnimationManager animManager;
     public void setSpeed(int s)

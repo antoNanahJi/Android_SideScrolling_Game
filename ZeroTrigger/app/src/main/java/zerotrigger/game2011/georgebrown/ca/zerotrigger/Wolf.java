@@ -20,22 +20,25 @@ import android.view.SurfaceView;
 public class Wolf implements GameObject {
     private Rect wolf;
     private RectPlayer player;
+    private Bullet bullet;
     private Bitmap wolf_img;
     private int color;
 
-    private int wolf_PosX = 100;
-    private int wolf_PosY = 730;
+    private int wolf_PosX ;
+    private int wolf_PosY ;
     private int wolf_spawnX = 250;
     private int wolf_spawnY = 900;
 
     private int state=0;
-    private int speed = 5;
+    private int speed = 7;
 
     private Animation wolfidle_anim;
     private Animation wolfattack_anim;
     private Animation wolfrecover_anim;
 
     private AnimationManager animManager;
+
+    private boolean destroyMe=false;
 
 
 
@@ -54,7 +57,8 @@ public class Wolf implements GameObject {
         BitmapFactory bf = new BitmapFactory();
 
         player = new RectPlayer(new Rect(125, 100, 300, 300), Color.GREEN);
-        wolf = new Rect(wolf_PosX, wolf_PosY, wolf_PosX+100, wolf_PosY+100);
+        bullet=new Bullet(player.player_sPosX + 50, player.player_sPosY + 70, 2);
+        wolf = new Rect(wolf_PosX, wolf_PosY, wolf_PosX+200, wolf_PosY+200);
         /////////////////////////////////////////
         // Wolf idle images
         /////////////////////////////////////////
@@ -63,9 +67,9 @@ public class Wolf implements GameObject {
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_idle2),
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_idle3)};*/
 
-        Bitmap wolf_idle1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle1);
-        Bitmap wolf_idle2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle2);
-        Bitmap wolf_idle3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle3);
+        Bitmap wolf_idle1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle1,options);
+        Bitmap wolf_idle2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle2,options);
+        Bitmap wolf_idle3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_idle3,options);
 
         /////////////////////////////////////////
         // Wolf attack images
@@ -78,12 +82,12 @@ public class Wolf implements GameObject {
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_attack5),
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_attack6)};*/
 
-        Bitmap wolf_atk1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack1);
-        Bitmap wolf_atk2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack2);
-        Bitmap wolf_atk3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack3);
-        Bitmap wolf_atk4 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack4);
-        Bitmap wolf_atk5 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack5);
-        Bitmap wolf_atk6 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack6);
+        Bitmap wolf_atk1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack1,options);
+        Bitmap wolf_atk2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack2,options);
+        Bitmap wolf_atk3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack3,options);
+        Bitmap wolf_atk4 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack4,options);
+        Bitmap wolf_atk5 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack5,options);
+        Bitmap wolf_atk6 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_attack6,options);
 
         /////////////////////////////////////////
         // Wolf recover images
@@ -93,16 +97,11 @@ public class Wolf implements GameObject {
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_Recover2),
                 bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.Wolf_Recover3)};*/
 
-        Bitmap wolfRec1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover1);
-        Bitmap wolfRec2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover2);
-        Bitmap wolfRec3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover3);
+        Bitmap wolfRec1 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover1,options);
+        Bitmap wolfRec2 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover2,options);
+        Bitmap wolfRec3 = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.wolf_recover3,options);
 
-        /////////////////////////////////////////
-        // Creating animation object
-        /////////////////////////////////////////
-        wolfidle_anim = new Animation(new Bitmap[]{wolf_idle1, wolf_idle2, wolf_idle3}, 2);
-        wolfattack_anim = new Animation(new Bitmap[]{wolf_atk1, wolf_atk2, wolf_atk3, wolf_atk4, wolf_atk5, wolf_atk6}, 2);
-        wolfrecover_anim = new Animation(new Bitmap[]{wolfRec1, wolfRec2, wolfRec3}, 2);
+
 
         Matrix matrix = new Matrix();
         matrix.preScale(-1, 1);
@@ -110,12 +109,18 @@ public class Wolf implements GameObject {
         wolf_idle1 = Bitmap.createBitmap(wolf_idle1, 0, 0, wolf_idle1.getWidth(), wolf_idle1.getHeight(), matrix, false);
         wolf_idle2 = Bitmap.createBitmap(wolf_idle2, 0, 0, wolf_idle2.getWidth(), wolf_idle2.getHeight(), matrix, false);
         wolf_idle3 = Bitmap.createBitmap(wolf_idle3, 0, 0, wolf_idle3.getWidth(), wolf_idle3.getHeight(), matrix, false);
+        /////////////////////////////////////////
+        // Creating animation object
+        /////////////////////////////////////////
+        wolfidle_anim = new Animation(new Bitmap[]{wolf_idle1, wolf_idle2, wolf_idle3}, 0.5f);
+        wolfattack_anim = new Animation(new Bitmap[]{wolf_atk1, wolf_atk2, wolf_atk3, wolf_atk4, wolf_atk5, wolf_atk6}, 0.5f);
+        wolfrecover_anim = new Animation(new Bitmap[]{wolfRec1, wolfRec2, wolfRec3}, 0.5f);
 
         animManager = new AnimationManager(new Animation[]{wolfidle_anim, wolfattack_anim, wolfrecover_anim});
-        animManager.playAnim(0);
+
     }
 
-    public boolean CollisionWithWolf(RectPlayer player)
+    public boolean CollisionPlayerWolf(RectPlayer player)
     {
         if(Rect.intersects(wolf, player.getRectangle()) == true)
         {
@@ -123,21 +128,49 @@ public class Wolf implements GameObject {
         }
         return false;
     }
-
+    public boolean CollisionBulletWolf(Bullet bullet)
+    {
+        if(Rect.intersects(wolf, bullet.getRectangle()) == true)
+        {
+            return true;
+        }
+        return false;
+    }
     public void decrementX()
     {
-        wolf_PosX -= speed;
-        wolf.set(wolf_PosX, wolf_PosY, wolf_PosX+100, wolf_PosY+100);
+        if(!destroyMe) {
+            wolf_PosX -= speed;
+            wolf.set(wolf_PosX, wolf_PosY, wolf_PosX + 200, wolf_PosY + 200);
+        }
+    }
+
+    public void DestroyWolf()
+    {
+        destroyMe=true;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        animManager.draw(canvas, wolf);
+        Paint paint = new Paint();
+        if(!destroyMe) {
+
+            //paint.setColor(Color.RED);
+            animManager.draw(canvas,wolf);
+            //canvas.drawRect(coin, paint);
+        }
+        if(destroyMe) {
+            paint.setColor(Color.TRANSPARENT);
+            canvas.drawRect(wolf, paint);
+            wolf.set(0,0,0,0);
+        }
     }
 
     @Override
     public void update() {
+        if(!destroyMe) {
+        animManager.playAnim(0);
         animManager.update();
+        }
     }
 
 

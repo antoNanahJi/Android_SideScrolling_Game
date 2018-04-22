@@ -28,6 +28,7 @@ public class Obstacles implements GameObject
     int bWidth;
     int bHeight;
     long startTime;
+    public boolean end=false;
 
     boolean reversedFirst;
     private int mapLayout[][]=
@@ -58,16 +59,11 @@ public class Obstacles implements GameObject
         startPosX-=scrollingSpeed;
         bWidth-=scrollingSpeed;
         if (bWidth <= Constants.SCREEN_WIDTH) {
-            //startPosX = 0;
+            end=true;
             scrollingSpeed=0;
-            //reversedFirst = !reversedFirst;
-        }
-            if (startPosX <= 0) {
-            //startPosX = bWidth;
-           // reversedFirst = !reversedFirst;
-
         }
     }
+
     public Obstacles( int playerGap)
     {
         player = new RectPlayer(new Rect(100,100,300,300), Color.GREEN);
@@ -131,7 +127,7 @@ public class Obstacles implements GameObject
         }
 
 
-        scrollingSpeed =5;
+        scrollingSpeed =7;
 
         bWidth=SIZE*numCol;
         bHeight=SIZE*numRow;
