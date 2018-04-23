@@ -65,9 +65,14 @@ public class MainGameActivity extends Activity {
     //private BackgroundView backgroundView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MediaPlayer gameSound = MediaPlayer.create(MainGameActivity.this, R.raw.zero_trigger_forestfrenzy);
+        gameSound.start();
+        //context = this.context;
+        //soundPlayer = new SoundPlayer(context);
         // setContentView(R.layout.activity_main_game);
         ///////////////Background Scrolling///////////////////
         // Get a display object to access screen details
@@ -98,6 +103,7 @@ public class MainGameActivity extends Activity {
 
         setContentView(new GamePanel(MainGameActivity.this));
 
+        //soundPlayer.playInGameSound();
     }
 
 

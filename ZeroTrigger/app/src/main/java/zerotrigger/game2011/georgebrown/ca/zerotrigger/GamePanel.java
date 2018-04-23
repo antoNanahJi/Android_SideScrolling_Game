@@ -99,12 +99,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     //game over variables
     private boolean isGameOver=false;
     private Bitmap gameOver_img;
+
+
     ///////////////////////////
     // Wolf variables
     private ArrayList<Wolf> wolves; //Array holdiing wolves
     public Wolf wolf;
     public int wolfX = 0;
     private boolean isWolfAlive = true;
+
+    // Dragon
+    private ArrayList<Dragon> dragons;
+    public Dragon dragon;
+    public int dragonX = 0;
 
 
     public GamePanel(Context context)
@@ -149,7 +156,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         // Wolf object
         wolves = new ArrayList<>();
         //wolf = new Wolf(400, 730);
+
+        // Dragon object
+        dragons = new ArrayList<>();
+        //dragon = new Dragon(1500, 720);
+
     }
+
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -157,17 +170,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
        // Constants.SCREEN_HEIGHT = h;
 
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
 
     }
+
     void updateTimerText()
     {
         minutes = String.valueOf((int)mTimer / 60);
         seconds = String.valueOf(((int)mTimer % 60));
         mTimer --;
     }
+
     boolean timerIsDone()
     {
         if(mTimer<=0.0f)
@@ -176,6 +192,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         }
         return false;
     }
+
     void GeneratingStuff() //generates wolves, coins ,update timer
     {
         endTime = System.nanoTime();
@@ -185,12 +202,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             generatingCoins();
             //Generating Wolves
             spawnWolf();
+            // Spawn dragon
+            spawnDragon();
             //Update Timer
             updateTimerText();
             startTime = endTime;
 
         }
     }
+
     void generatingCoins()
     {
        if(coinX<5000) {
@@ -198,11 +218,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
            coinX+=1250;
        }
     }
+
     void  spawnWolf()
     {
         if (wolfX < 5000) {
             wolves.add(new Wolf(650 + wolfX, 685));
             wolfX += 1000;
+        }
+    }
+
+    void spawnDragon()
+    {
+        if(dragonX < 5000)
+        {
+            dragons.add(new Dragon(5500 + dragonX, 500));
+            dragonX += 5000;
         }
     }
 
@@ -222,6 +252,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             isGameOver=true;
         }
     }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
@@ -231,6 +262,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         thread.start();
 
     }
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
@@ -244,6 +276,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             retry = false;
         }
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -308,6 +341,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update()
     {
+
         if(!isGameOver) {
             //Generating Coins ,Wolves
             GeneratingStuff();
@@ -332,6 +366,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 {
                     ob.decrementX();
                 }
+
+                for (Dragon ob : dragons)
+                {
+                    ob.decrementX();
+                }
             }
 
             if (moveBullet) {
@@ -340,14 +379,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 }
             }
 
-            if (isWolfAlive) {
-
-
-                //wolves.update();
-                //when player and enemy collides set health bar
-                // mHealth-=10;
-                //setHealthBar(mHealth);
-            }
             for (Wolf ob : wolves) {
                 ob.update();
                 if (ob.CollisionPlayerWolf(player)) {
@@ -357,14 +388,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                     setHealthBar(mHealth);
                 }
                 for (Bullet bu : bullets) {
-                    if (ob.CollisionBulletWolf(bu)) {
+                    if (ob.CollisionBulletWolf(bu))
+                    {
                         sound.playWolfSound();
-                    ob.DestroyWolf();
-                    bu.DestroyBullet();
-                    mScore++;
-                }
+                        ob.DestroyWolf();
+                        bu.DestroyBullet();
+                        mScore++;
+                    }
                 }
             }
+
+            for (Dragon ob : dragons)
+            {
+                ob.update();
+            }
+
             //Coin collision
             for (Coin ob : coins) {
                 //ob.update();
@@ -428,10 +466,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 ob.draw(canvas);
             }
 
+            for (Dragon ob : dragons)
+            {
+                ob.draw(canvas);
+            }
+
         }
         //drawing game over screen
         if(isGameOver) {
             canvas.drawBitmap(gameOver_img, 0, 0, null);
         }
+
     }
 }

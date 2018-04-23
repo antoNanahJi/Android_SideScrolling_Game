@@ -22,7 +22,8 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape"
         />
-        <activity android:name=".InstructionActivity">
+        <activity android:name=".InstructionActivity"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 

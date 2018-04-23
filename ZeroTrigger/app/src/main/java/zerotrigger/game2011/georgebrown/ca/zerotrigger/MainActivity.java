@@ -61,8 +61,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                Intent intentInstance = new Intent(MainActivity.this, MainGameActivity.class);
                 setContentView(R.layout.activity_main);
-                MediaPlayer gameSound = MediaPlayer.create(MainActivity.this, R.raw.zero_trigger_music);
-                gameSound.start();
+                //MediaPlayer gameSound = MediaPlayer.create(MainActivity.this, R.raw.zero_trigger_forestfrenzy);
+                //gameSound.start();
                startActivity(intentInstance);
             }
         });
