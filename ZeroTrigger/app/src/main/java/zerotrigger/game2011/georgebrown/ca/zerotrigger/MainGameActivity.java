@@ -44,6 +44,7 @@ import android.graphics.Paint;
 import android.graphics.Picture;
 import android.graphics.Point;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,7 +69,6 @@ public class MainGameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_main_game);
-
         ///////////////Background Scrolling///////////////////
         // Get a display object to access screen details
        /* Display display = getWindowManager().getDefaultDisplay();
@@ -97,6 +97,7 @@ public class MainGameActivity extends Activity {
 
 
         setContentView(new GamePanel(MainGameActivity.this));
+
     }
 
 

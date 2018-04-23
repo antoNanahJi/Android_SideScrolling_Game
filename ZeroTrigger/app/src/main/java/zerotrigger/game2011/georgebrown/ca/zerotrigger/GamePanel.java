@@ -42,6 +42,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -77,7 +78,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private int attack_Btn_PosX=Constants.SCREEN_WIDTH - 250;
     private int attack_Btn_PosY=Constants.SCREEN_HEIGHT-300;
     private int attack_Btn_SIZE=200;
-
+    private SoundPlayer sound;
     //Timer variables
     float mTimer=300.0f; //sets timer
     long startTime, endTime;
@@ -98,8 +99,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     //game over variables
     private boolean isGameOver=false;
     private Bitmap gameOver_img;
-
-
     ///////////////////////////
     // Wolf variables
     private ArrayList<Wolf> wolves; //Array holdiing wolves
@@ -112,15 +111,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     {
         super(context);
 
+
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
-
+        sound = new SoundPlayer(context);
         thread = new MainThread(getHolder(),this);
         player = new RectPlayer(new Rect(100,100,300,300), Color.GREEN);
         playerPoint= new Point(250,830);
         BitmapFactory.Options options= new BitmapFactory.Options();
         options.inScaled=false;
-
         right_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.right_btn,options); //right touch button bitmap
         left_Btn= BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.left_btn,options);//left touch button bitmap
         background=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.back_img,options);//back touch button bitmap
@@ -199,7 +198,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
            coinX+=1250;
        }
     }
-
     void  spawnWolf()
     {
         if (wolfX < 5000) {
@@ -219,6 +217,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         if(mHealth==10)
             health_img_1=BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.empty,options);
         if(mHealth==0) {
+            sound.playGameOverSound();
             health_img = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.empty, options);
             isGameOver=true;
         }
@@ -226,9 +225,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+
         thread = new MainThread(getHolder(),this);
         thread.setRunning(true);
         thread.start();
+
     }
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
@@ -246,7 +247,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-
        int x=(int)event.getX();
         int y=(int)event.getY();
         if(event.getAction()==MotionEvent.ACTION_DOWN)//&&event.getAction()==MotionEvent.ACTION_MOVE) {
@@ -281,7 +281,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                         player.setState(5);
                         bullets.add(new Bullet(player.player_sPosX + 50, player.player_sPosY + 70, 2));
                     }
-
+                    sound.playArrowSound();
                     moveBullet=true;
                 }
             }
@@ -305,11 +305,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         //return super.onTouchEvent(event);
 
     }
+
     public void update()
     {
         if(!isGameOver) {
             //Generating Coins ,Wolves
             GeneratingStuff();
+
             //Moving Player
             if (movePlayerR) {
                 player.decrementPlayerX();
@@ -349,12 +351,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             for (Wolf ob : wolves) {
                 ob.update();
                 if (ob.CollisionPlayerWolf(player)) {
+                    sound.playHitSound();
                     ob.DestroyWolf();
                     mHealth-=10;
                     setHealthBar(mHealth);
                 }
                 for (Bullet bu : bullets) {
                     if (ob.CollisionBulletWolf(bu)) {
+                        sound.playWolfSound();
                     ob.DestroyWolf();
                     bu.DestroyBullet();
                     mScore++;
@@ -365,6 +369,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             for (Coin ob : coins) {
                 //ob.update();
                 if (ob.CollisionWithCoin(player)) {
+                    sound.playCoinSound();
                     ob.DestroyCoin();
                     mScore++;
                   }
@@ -425,7 +430,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
         }
         //drawing game over screen
-        if(isGameOver)
-            canvas.drawBitmap(gameOver_img,0,0,null);
+        if(isGameOver) {
+            canvas.drawBitmap(gameOver_img, 0, 0, null);
+        }
     }
 }

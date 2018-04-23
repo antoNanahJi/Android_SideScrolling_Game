@@ -56,6 +56,7 @@ public class TimerCountdown extends Activity{//timer
     public TextView textView;
     int counter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
